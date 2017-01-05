@@ -66,3 +66,4 @@ public class Hamming {
         }
         return diff;
     }
+}

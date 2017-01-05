@@ -7,7 +7,7 @@
  */
 package jkmeans;
 
-import distance.Distance;
+//import distance.Distance;
 import java.util.ArrayList;
 
 public class Cluster {
