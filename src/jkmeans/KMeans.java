@@ -13,10 +13,7 @@
  */
 package jkmeans;
 
-import distance.Distance;
-import java.util.ArrayList;
-
-public class Kmeans {
+public class KMeans {
     
     private static Cluster[] clusters;
     private static int K;
@@ -113,6 +110,5 @@ public class Kmeans {
             }
         }
         return pos;
-    }
-    
+    }    
 }

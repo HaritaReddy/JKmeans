@@ -6,10 +6,9 @@
  */
 package jkmeans;
 
-import dataio.TxtReader;
 import java.util.Random;
 
-public class KmeansTester {
+public class Tester {
     
     private static int[] seeds;
     private static double[][] data;
@@ -21,11 +20,12 @@ public class KmeansTester {
         int i = Integer.parseInt(args[2]);
         int n = Integer.parseInt(args[3]);
         int d = Integer.parseInt(args[4]);
-        data = TxtReader.ReadDouble(filename, ",", d, n);
+        //data = TxtReader.ReadDouble(filename, ",", d, n);
+        data = new double[d][n];
         
         randomSeeds(k, n);  //This will eventually be replaced by k-means++
         
-        double[][]centroids = Kmeans.kmeans(data, k, i, seeds);
+        double[][]centroids = KMeans.kmeans(data, k, i, seeds);
         System.out.println("Clustering complete. Final centroids:");
         for(int j = 0; j < centroids.length; j++) {
             String line = "Centroid " + j + ": ";
