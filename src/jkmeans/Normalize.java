@@ -195,36 +195,31 @@ public class Normalize {
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
      */
-    public static ArrayList<double[]> euclidNorm(ArrayList<double[]> data) {
-        int dimen = data.get(0).length;
+    public static double[][] euclidNorm(double[][] data) {
+        int points = data.length;
+        int dimen = data[0].length;
         double[] euclidNorm = new double [dimen];			//List of the Euclid. norm of each attribute
+        double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Calculate the Euclidean norm of each attribute
-        for (int a = 0; a < dimen; a++) {
+        for (int d = 0; d < dimen; d++) {
             double sumSquare = 0.;
             
-            for (double[] pt : data) {
-                sumSquare += pt[a] * pt[a];
+            for (int p = 0; p < points; p++) {
+                sumSquare += data[p][d] * data[p][d];
             }
             
-            euclidNorm[a] = Math.sqrt(sumSquare);
+            euclidNorm[d] = Math.sqrt(sumSquare);
         }
         
-        //Create the normalized list of data points by dividing attr. value by attr. Euclid. norm
-        ArrayList<double[]> norm = new ArrayList();	//List of normalized data points
-        
-        for (double[] pt : data) {
-            double[] newPoint = new double[dimen];
-            
-            for (int a = 0; a < dimen; a++) {
-                if (euclidNorm[a] == 0.) {
-                    newPoint[a] = 0.;
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                if (euclidNorm[d] == 0.) {
+                    norm[p][d] = 0.;
                 } else {
-                    newPoint[a] = pt[a] / euclidNorm[a];
+                    norm[p][d] = data[p][d] / euclidNorm[d];
                 }
             }
-            
-            norm.add(newPoint.clone());
         }
         
         return norm;
