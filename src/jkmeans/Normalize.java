@@ -231,63 +231,60 @@ public class Normalize {
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
      */
-    public static ArrayList<double[]> rankedNorm(ArrayList<double[]> data ) {
-        double[] tmp = data.get(0);
-        int dimen = tmp.length;
-        int size = data.size();
-        double[][] rankings = new double[dimen][size];	//List of rankings for each attr. value of each point in data set
+    public static double[][] rankedNorm(double[][] data ) {
+        double[] tmp = data[0];
+        int dimen = data[0].length;
+        int points = data.length;
+        double[][] rankings = new double[dimen][points];	//List of rankings for each attr. value of each point in data set
+        double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Seed the rankings table with the values from the first point in the data set
-        for (int a = 0; a < dimen; a++) {
-            rankings[a][0] = tmp[a];
+        for (int d = 0; d < dimen; d++) {
+            rankings[d][0] = tmp[d];
         }
         
         //Rank the data with an insertion sort. This code will fill out a D x N table of double values, in ascending order.
-        for (int p = 1; p < size; p++) {
-            tmp = data.get(p);
+        for (int p = 1; p < points; p++) {
+            tmp = data[p];
             
-            for (int a = 0; a < dimen; a++) {
+            for (int d = 0; d < dimen; d++) {
                 //
                 //Use insertion sort to put attribute in its place. Based on pseudocode in Intro to Algorithms 3rd Ed. (Cormen, et al.) p.18
                 //
-                double key = tmp[a];	//The value to be inserted
+                double key = tmp[d];	//The value to be inserted
                 int i = p - 1;			//This corresponds to 'j - 1'.
                 
-                while(i >= 0 && rankings[ a ][ i ] > key) {
-                    rankings[a][i + 1] = rankings[a][i];	//Move this element up one rank
+                while(i >= 0 && rankings[ d ][ i ] > key) {
+                    rankings[d][i + 1] = rankings[d][i];	//Move this element up one rank
                     i--;											//Decrement the index
                 }
                 
-                rankings[a][i + 1] = key;	//Set the key in its new correct position
+                rankings[d][i + 1] = key;	//Set the key in its new correct position
             }
         }
         
-        //Create list of normalized points by finding the rank of every one of a point's attr. values
-        ArrayList<double[]> norm = new ArrayList();	//List of normalized data points
-        
-        for (int p = 0; p < size; p++) {
-            tmp = data.get(p);
-            double[] newPoint = new double[dimen];
+        for (int p = 0; p < points; p++) {
+            tmp = data[p];
             int rank;						//Lowest rank with this value
             int maxRank;					//Highest rank with this value
             
-            for (int a = 0; a < dimen; a++) {
+            for (int d = 0; d < dimen; d++) {
                 rank = 0;		//Lowest index with matching value
                 maxRank = 0;	//Highest index with matching value
                 
                 //Find the lowest rank matching that attribute value
-                while(rank < size && tmp[a] > rankings[a][rank]) {
+                while(rank < points && tmp[d] > rankings[d][rank]) {
                     rank++;
                     maxRank++;
                 }
                 
-                while(maxRank < size && tmp[a] == rankings[a][maxRank]) {
+                while(maxRank < points && tmp[d] == rankings[d][maxRank]) {
                     maxRank++;
                 }
                 
                 //If only one ranking has that value, return the ranking
                 if(maxRank == rank) {
-                    newPoint[ a ] = rank;
+                    norm[p][d] = rank;
                 //If more than one ranking has that value, sum the value of rankings and divide by number
                 } else {
                     double sum = 0.;	//Sum the rankings
@@ -298,11 +295,9 @@ public class Normalize {
                         count++;
                     }
                     
-                    newPoint[a] = sum / count;
+                    norm[p][d] = sum / count;
                 }
             }
-            
-            norm.add(newPoint.clone());
         }
         
         return norm;
