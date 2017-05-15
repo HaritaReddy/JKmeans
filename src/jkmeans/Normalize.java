@@ -65,38 +65,30 @@ public class Normalize {
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
      */
-    public static ArrayList<double[]> maxNorm(ArrayList<double[]> data ) {
-        int dimen = data.get(0).length;
-        double[] max = new double[dimen];		//List of the highest value in each attribute
-        
+    public static double[][] maxNorm(double[][] data ) {
+        int points = data.length;
+        int dimen = data[0].length;
         //Set the max of each attribute to the first point in the set
-        for (int a = 0; a < dimen; a++) {
-            max[a] = data.get(0)[a];
-        }
+        double[] max = data[0];
+        double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Find the highest value of each attribute in the set
-        for (double[] pt : data) {
-            for (int a = 0; a < dimen; a++) {
-                if (pt[a] > max[a]) {
-                    max[a] = pt[a];
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                if (data[p][d] > max[d]) {
+                    max[d] = data[p][d];
                 }
             }
         }
         
-        //Create normalized list of data points by dividing attr. value by attr. maximum
-        ArrayList< double[] > norm = new ArrayList();	//List of normalized data points
-        
-        for (double[] pt : data) {
-            double[] newPoint = new double[dimen];
-            for (int a = 0; a < dimen; a++) {
-                if (max[a] == 0.) {
-                    newPoint[a] = 0.;
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                if (max[d] == 0.) {
+                    norm[p][d] = 0.;
                 } else {
-                    newPoint[a] = pt[a] / max[a];
+                    norm[p][d] = data[p][d] / max[d];
                 }
             }
-            
-            norm.add(newPoint.clone());
         }
         
         return norm;
