@@ -1,13 +1,4 @@
 package jkmeans;
-/**********************************************************************************************************************************************
-Robert Streetman
-LSUS - CST 790 (Dr Celebi)
-Fall 2012
-Class: Normalize
-Description: This class holds functions for normalizing data ( ArrayList< double[] > dataPoints ) in several methods.
-Included is Min-Max, Z-Score, ...
-**********************************************************************************************************************************************/
-import java.util.ArrayList;
 
 /**
  * Class holding methods for normalizing data.
@@ -26,6 +17,7 @@ public class Normalize {
         int dimen = data[0].length;
         double[] min;
         double[] max;
+        double[] range = new double[dimen];
         double[][] norm = new double[points][dimen];
 
         //Set the min and max of each attribute to the first point in the data set
@@ -34,24 +26,28 @@ public class Normalize {
         //Find the highest and lowest value of each attribute in the set
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                //New min value for dimension?
-                if (data[p][d] < min[d]) {
-                    min[d] = data[p][d];
+                double dimenValue = data[p][d];
+                
+                if (dimenValue < min[d]) {  //New min value for dimension?
+                    min[d] = dimenValue;
                 }
                 
-                //New max value for dimension?
-                if (data[p][d] > max[d]) {
-                    max[d] = data[p][d];
+                if (dimenValue > max[d]) {  //New max value for dimension?
+                    max[d] = dimenValue;
                 }
             }
         }
         
+        for (int d = 0; d < dimen; d++) {
+            range[d] = max[d] - min[d];
+        }
+        
         for (int p = 0; p < points; p++) {            
             for (int d = 0; d < dimen; d++) {
-                if(min[d] == max[d]) {
+                if(range[d] == 0.) {
                     norm[p][d] = 0.;
                 } else {
-                    norm[p][d] = (data[p][d] - min[d]) / (max[d] - min[d]);
+                    norm[p][d] = (data[p][d] - min[d]) / range[d];
                 }
             }
         }
@@ -105,6 +101,7 @@ public class Normalize {
         int dimen = data[0].length;
         double[] min;		//List of the lowest value in each attribute
         double[] max;		//List of the highest value in each attribute
+        double[] range = new double[dimen];
         
         //Set the min and max of each attribute to the first point in the set
         min = max = data[0];
@@ -113,23 +110,28 @@ public class Normalize {
         //Find the highest and lowest value of each attribute in the set
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                //See if the min-max values need to be adjusted
-                if (data[p][d] < min[d]) {
-                    min[d] = data[p][d];
+                double point = data[p][d];
+                
+                if (point < min[d]) {  //New min value for dimension?
+                    min[d] = point;
                 }
                 
-                if (data[p][d] > max[d]) {
-                    max[d] = data[p][d];
+                if (point > max[d]) {  //New max value for dimension?
+                    max[d] = point;
                 }
             }
         }
         
+        for (int d = 0; d < dimen; d++) {
+            range[d] = max[d] - min[d];
+        }
+        
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                if (min[d] == max[d]) {
+                if (range[d] == 0.) {
                     norm[p][d] = 0.;
                 } else {
-                    norm[p][d] = data[p][d] / (max[d] - min[d]);
+                    norm[p][d] = data[p][d] / range[d];
                 }
             }
         }
@@ -254,7 +256,7 @@ public class Normalize {
                 double key = tmp[d];	//The value to be inserted
                 int i = p - 1;			//This corresponds to 'j - 1'.
                 
-                while(i >= 0 && rankings[ d ][ i ] > key) {
+                while(i >= 0 && rankings[d][i] > key) {
                     rankings[d][i + 1] = rankings[d][i];	//Move this element up one rank
                     i--;											//Decrement the index
                 }
