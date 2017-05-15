@@ -6,7 +6,6 @@
 package jkmeans;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -15,11 +14,16 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 /**
- *
- * @author robert
+ *  This class holds methods for returning an array of data values from CSV/TSV files using Apache Commons library.
+ * @author Robert Streetman
  */
 public class DataFileReader {
     
+    /**
+     * 
+     * @param dataFile, CSV file containing only numeric data to be clustered.
+     * @return Array of values expressed as double values.
+     */
     public static double[][] ReadeCSVFile(File dataFile) {
         double[][] data = null;
         FileReader reader = null;
@@ -67,8 +71,13 @@ public class DataFileReader {
         return data;
     }
     
+    /**
+     * 
+     * @param dataFile, TSV file containing only numeric data to be clustered.
+     * @return Array of values expressed as double values.
+     */
     public static double[][] ReadTSVFile(File dataFile) {
-        double[][] data = new double[0][0];
+        double[][] data = null;
         
         return data;
     }
