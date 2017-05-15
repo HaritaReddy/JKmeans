@@ -38,22 +38,7 @@ public class KMeans {
         D = dat[0].length;
         data = dat;
         clusters = new Cluster[K];
-        
-        /*
-        //Some standard parameter checking
-        if (K <= 0) {
-            throw new IllegalArgumentException("There must be at least one cluster!");
-        }
-        if (I < 5) {
-            throw new IllegalArgumentException("Kmeans should run at least 5 iterations to stabilize!");
-        }
-        if (N <= 0 || N <= K) {
-            throw new IllegalArgumentException("The data set has too few points!");
-        }
-        if (D <= 0) {
-            throw new IllegalArgumentException("The data must have at least one dimension!");
-        }
-        */
+        double[][] centroids = new double[K][D];
         
         for (int i = 0; i < K; i++) {
             clusters[i] = new Cluster(data[seeds[i]]);
@@ -61,13 +46,11 @@ public class KMeans {
         
         for (int i = 0; i < I; i++) {
             ClusterPoints();
-            System.out.println("Iteration " + (i + 1) + " complete...");
+            System.out.println("\nIteration " + (i + 1) + " complete...");
         }
         
-        double[][] centroids = new double[K][D]; 
-        
         for (int i = 0; i < K; i++) {
-            System.arraycopy(clusters[i].Centroid(), 0, centroids[i], 0, D);
+            centroids[i] = clusters[i].Centroid();
         }
         
         return centroids;

@@ -37,14 +37,14 @@ public class DataFileReader {
             List records = parser.getRecords();
             CSVRecord firstRecord = (CSVRecord) records.get(0);
             int numRecords = records.size();
-            int numValsPerLine = firstRecord.size();
+            int numDimen = firstRecord.size();
             
-            data = new double[numRecords][numValsPerLine];
+            data = new double[numRecords][numDimen];
             
             for (int i = 0; i < numRecords; i++) {
                 CSVRecord thisRecord = (CSVRecord) records.get(i);
                 
-                for (int j = 0; j < numValsPerLine; j++) {
+                for (int j = 0; j < numDimen; j++) {
                     data[i][j] = Double.parseDouble(thisRecord.get(j));
                 }
             }
