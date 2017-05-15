@@ -6,6 +6,7 @@
  */
 package jkmeans;
 
+import java.io.File;
 import java.util.Random;
 
 public class Tester {
@@ -14,14 +15,14 @@ public class Tester {
     private static double[][] data;
 
     public static void main(String[] args) {
-        //Params - "filename" K I N D
+        
         String filename = args[0];
         int k = Integer.parseInt(args[1]);
         int i = Integer.parseInt(args[2]);
         int n = Integer.parseInt(args[3]);
         int d = Integer.parseInt(args[4]);
-        //data = TxtReader.ReadDouble(filename, ",", d, n);
-        data = new double[d][n];
+        //data = new double[d][n];
+        data = DataFileReader.ReadeCSVFile(new File(filename));
         
         randomSeeds(k, n);  //This will eventually be replaced by k-means++
         
@@ -53,25 +54,5 @@ public class Tester {
                 count++;
             }
         }
-        //System.out.println("Here are indices of seeds:");
-        //for(int i = 0; i < k; i++) {
-        //    System.out.println("Seed " + i + ": Pos = " + seeds[i]);
-        //}
     }
-     /*
-     * This was just used to make sure there was actually data in the data points
-    */
-    private static void printData() {
-        for(int i = 0; i < data.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Point ");
-            sb.append(i);
-            sb.append(":\t");
-            for(int j = 0; j < data[0].length; j++) {
-               sb.append(data[i][j]);
-               sb.append("\t");
-            }
-            System.out.println(sb.toString());
-        }
-    }    
 }
