@@ -21,45 +21,39 @@ public class Normalize {
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
      */
-    public static ArrayList<double[]> minMax(ArrayList<double[]> data) {
-        int dimen = data.get(0).length;
-        double[] min = new double[dimen];		//List of the lowest value of each attribute
-        double[] max = new double[dimen];		//List of the highest value of each attribute
+    public static double[][] minMax(double[][] data) {
+        int points = data.length;
+        int dimen = data[0].length;
+        double[] min;
+        double[] max;
+        double[][] norm = new double[points][dimen];
 
         //Set the min and max of each attribute to the first point in the data set
-        for (int a = 0; a < dimen; a++) {
-            min[a] = max[a] = data.get(0)[a];
-        }
+        min = max = data[0];
         
         //Find the highest and lowest value of each attribute in the set
-        for (double[] pt : data) {
-            for (int a = 0; a < dimen; a++) {
-                //See if the min-max values need to be adjusted
-                if (pt[a] < min[a]) {
-                    min[a] = pt[a];
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                //New min value for dimension?
+                if (data[p][d] < min[d]) {
+                    min[d] = data[p][d];
                 }
                 
-                if (pt[a] > max[a]) {
-                    max[a] = pt[a];
+                //New max value for dimension?
+                if (data[p][d] > max[d]) {
+                    max[d] = data[p][d];
                 }
             }
         }
         
-        //Create normalized list of data points by subtracting minimum attr. value from attr. value, then dividing by attr. range
-        ArrayList<double[]> norm = new ArrayList();	//List of normalized data points
-        
-        for (double[] pt : data) {
-            double[] newPoint = new double[dimen];
-            
-            for (int a = 0; a < dimen; a++) {
-                if(min[a] == max[a]) {
-                    newPoint[a] = 0.;
+        for (int p = 0; p < points; p++) {            
+            for (int d = 0; d < dimen; d++) {
+                if(min[d] == max[d]) {
+                    norm[p][d] = 0.;
                 } else {
-                    newPoint[a] = (pt[a] - min[a]) / (max[a] - min[a]);
+                    norm[p][d] = (data[p][d] - min[d]) / (max[d] - min[d]);
                 }
             }
-            
-            norm.add(newPoint.clone());
         }
         
         return norm;
