@@ -143,53 +143,47 @@ public class Normalize {
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
      */
-    public static ArrayList<double[]> zScore(ArrayList<double[]> data) {
-        int dimen = data.get(0).length;
-        int N = data.size();
+    public static double[][] zScore(double[][] data) {
+        int dimen = data[0].length;
+        int points = data.length;
         double[] mean = new double[dimen];		//List of the mean value of each attribute
         double[] sums = new double[dimen];		//List of the sum of values of each attribute
         double[] stdDev = new double[dimen];		//List of the standard deviation of each attribute
         double[] sumSquared = new double[dimen];	//List of the variance of each attribute
+        double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Find the sum of all values for each attribute in the data set
-        for (double[] pt : data) {
-            for (int a = 0; a < dimen; a++) {
-                sums[a] += pt[a];
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                sums[d] += data[p][d];
             }
         }
         
         //Calculate the mean value of each attribute in the data set
-        for (int a = 0; a < dimen; a++) {
-            mean[a] = sums[a] / N;
+        for (int d = 0; d < dimen; d++) {
+            mean[d] = sums[d] / points;
         }
         
         //Find the variance of each attribute in the data set
-        for (double[] pt : data) {
-            for (int a = 0; a < dimen; a++) {
-                sumSquared[a] += (pt[a] - mean[a]) * (pt[a] - mean[a]);
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                sumSquared[d] += (data[p][d] - mean[d]) * (data[p][d] - mean[d]);
             }
         }
         
         //Calculate standard deviation of each attribute in the data set
-        for (int a = 0; a < dimen; a++) {
-            stdDev[a] = Math.sqrt(sumSquared[a] / (N - 1));
+        for (int d = 0; d < dimen; d++) {
+            stdDev[d] = Math.sqrt(sumSquared[d] / (points - 1));
         }
         
-        //Create normalized list of data points by subtracting attr. mean from attr. value, then dividing by attr. std. dev.
-        ArrayList<double[]> norm = new ArrayList();	//List of normalized data points
-        
-        for (double[] pt : data) {
-            double[] newPoint = new double[dimen];
-            
-            for (int a = 0; a < dimen; a++) {
-                if (stdDev[a] == 0.) {
-                    newPoint[a] = 0.;
+        for (int p = 0; p < points; p++) {
+            for (int d = 0; d < dimen; d++) {
+                if (stdDev[d] == 0.) {
+                    norm[p][d] = 0.;
                 } else {
-                    newPoint[a] = (pt[a] - mean[a]) / stdDev[a];
+                    norm[p][d] = (data[p][d] - mean[d]) / stdDev[d];
                 }
             }
-            
-            norm.add(newPoint.clone());
         }
         
         return norm;
