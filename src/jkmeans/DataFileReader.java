@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jkmeans;
 
 import java.io.File;
@@ -14,12 +9,14 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 /**
- *  This class holds methods for returning an array of data values from CSV/TSV files using Apache Commons library.
+ * This class holds methods for returning an array of data values from CSV/TSV files using Apache Commons library.
+ * 
  * @author Robert Streetman
  */
 public class DataFileReader {
     
     /**
+     * This method accepts a CSV file, no headers, and returns an array of values expressed as double.
      * 
      * @param dataFile, CSV file containing only numeric data to be clustered.
      * @return Array of values expressed as double values.
@@ -72,6 +69,7 @@ public class DataFileReader {
     }
     
     /**
+     * This method accepts a TSV file, no headers, and returns an array of values expressed as double.
      * 
      * @param dataFile, TSV file containing only numeric data to be clustered.
      * @return Array of values expressed as double values.

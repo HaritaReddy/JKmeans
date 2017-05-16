@@ -8,10 +8,10 @@ import java.util.ArrayList;
  * @author Robert Streetman
  */
 public class Cluster {
+    private final int dimensions;
     
     private ArrayList<double[]> points;
     private double[] centroid;
-    private int dimensions;
     
     /**
      * Cluster instantiation.
@@ -79,8 +79,8 @@ public class Cluster {
      * Calculates and stores the value of the new centroid from all points which have been added to the cluster.
      */
     public void CalcCentroid() {
-        double[] sum = new double[dimensions];
         centroid = new double[dimensions];
+        double[] sum = new double[dimensions];
         int n = 0;
         
         for (double[] point : points) {

@@ -1,26 +1,13 @@
-/**
- * @author Robert Streetman
- * @date 2014-12-21
- * @desc The k-means clustering algorithm is a prototype-based (considers "ideal" points) partitioning
- *      algorithm designed to take a data set of N points, all with dimensionality D, and separate
- *      them into K clusters for I iterations. Generally, the first points used as prototypes for the 
- *      clusters are randomly chosen from the data set. The size and shape of the initial clusters may 
- *      fluctuate wildly at first, but rapidly converge to a constant value (within 3-5 iterations).
- *      To ensure it is working properly, at each iteration, the variance of the points in each cluster
- *      is determined and summed together. While the variance of an individual cluster may increase in
- *      early iterations as new points are added, the sum of all cluster SSE will decline if working 
- *      properly (i.e., each point has a centroid nearer to it than the iteration before).
- */
 package jkmeans;
 
 public class KMeans {
     
-    private static Cluster[] clusters;
     private static int K;
     private static int I;
     private static int N;
     private static int D;
     private static double[][] data;
+    private static Cluster[] clusters;
     
     /**
      * Performs k-means clustering on data set, provided K,I, and seed positions.
@@ -76,16 +63,16 @@ public class KMeans {
         }
         
         //Print out SSE's to monitor progress
-        double total = 0.;
+        double totalSSE = 0.;
         
         for (int i = 0; i < K; i++) {
             double sse = clusters[i].SumSquareError();
             
-            total += sse;
+            totalSSE += sse;
             System.out.println("The SSE for cluster " + (i + 1) + " is " + sse);
         }
         
-        System.out.println("The total SSE for this iteration: " + total);
+        System.out.println("The total SSE for this iteration: " + totalSSE);
         
         //Clear the points in all clusters
         for (int i = 0; i < K; i++) {

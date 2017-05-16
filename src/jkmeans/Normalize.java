@@ -8,7 +8,9 @@ package jkmeans;
 public class Normalize {
 	
     /**
-     * MinMax normalization method normalizes each dimension of each point based on min/max of that dimension across all points.
+     * MinMax normalization method normalizes each dimension of each point based on min/max 
+     * of that dimension across all points.
+     * 
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
      */
@@ -102,10 +104,9 @@ public class Normalize {
         double[] min;		//List of the lowest value in each attribute
         double[] max;		//List of the highest value in each attribute
         double[] range = new double[dimen];
-        
+        double[][] norm = new double[points][dimen];	//List of normalized data points
         //Set the min and max of each attribute to the first point in the set
         min = max = data[0];
-        double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Find the highest and lowest value of each attribute in the set
         for (int p = 0; p < points; p++) {
@@ -192,7 +193,8 @@ public class Normalize {
     }
 
     /**
-     * EuclidNorm normalization method normalizes data points based on the Euclidean norm of all the points' dimensions.
+     * EuclidNorm normalization method normalizes data points based on the Euclidean norm 
+     * of all the points' dimensions.
      * 
      * @param data Array of data point coordinates, expressed as doubles.
      * @return Array of normalized data points, expressed as doubles.
@@ -200,7 +202,7 @@ public class Normalize {
     public static double[][] euclidNorm(double[][] data) {
         int points = data.length;
         int dimen = data[0].length;
-        double[] euclidNorm = new double [dimen];			//List of the Euclid. norm of each attribute
+        double[] euclidNorm = new double [dimen];	//List of the Euclid. norm of each attribute
         double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Calculate the Euclidean norm of each attribute
@@ -234,10 +236,10 @@ public class Normalize {
      * @return Array of normalized data points, expressed as doubles.
      */
     public static double[][] rankedNorm(double[][] data ) {
-        double[] tmp = data[0];
         int dimen = data[0].length;
         int points = data.length;
-        double[][] rankings = new double[dimen][points];	//List of rankings for each attr. value of each point in data set
+        double[] tmp = data[0];
+        double[][] rankings = new double[dimen][points];//List of rankings for each attr. value of each point in data set
         double[][] norm = new double[points][dimen];	//List of normalized data points
         
         //Seed the rankings table with the values from the first point in the data set
@@ -250,15 +252,16 @@ public class Normalize {
             tmp = data[p];
             
             for (int d = 0; d < dimen; d++) {
-                //
-                //Use insertion sort to put attribute in its place. Based on pseudocode in Intro to Algorithms 3rd Ed. (Cormen, et al.) p.18
-                //
+                /*
+                * Use insertion sort to put attribute in its place. Based on pseudocode in 
+                * Intro to Algorithms 3rd Ed. (Cormen, et al.) p.18
+                */
+                int i = p - 1;//This corresponds to 'j - 1'.
                 double key = tmp[d];	//The value to be inserted
-                int i = p - 1;			//This corresponds to 'j - 1'.
                 
                 while(i >= 0 && rankings[d][i] > key) {
                     rankings[d][i + 1] = rankings[d][i];	//Move this element up one rank
-                    i--;											//Decrement the index
+                    i--;					//Decrement the index
                 }
                 
                 rankings[d][i + 1] = key;	//Set the key in its new correct position
