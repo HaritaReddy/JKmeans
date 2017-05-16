@@ -4,18 +4,20 @@ Java implementation of the k-means clustering algorithm. K-means accepts *N* *d*
 :warning: K-means is not suited to every data clustering project. Membership is **mutually exclusive** - a point cannot be in more than one cluster at once. If any of the characteristics on which the points are being clustered are not useful in discriminating classes, the final clustering can be affected, so *too much* data can be an issue. :warning:
 
 ## Usage
-**Command-line:** *-fileName* *-numberClusters* *-numberIterations*
+**Command-line:** *-fileName* *-numberClusters* *-numberIterations* *numberDataPoints* *numberDataDimensions*
 
 ## Data Format
-Program assumes the simple tab-separated value format of the UC-Irvine Machine Learning Repository (no headers, no text, uniform dimensionality)
+Program assumes a valid CSV format, no header, no label data file from the UC-Irvine Machine Learning Repository.
 
 ## To-Do
-- Additional 'smart' seeding methods (k-means++)
-- Additional distance measurements (Manhattan, Mahalanobis, etc.)
-- Rand index to measure correlation
-- File output/class labelling
-- Ability to cluster text data points (**Ex** via Hamming)
-  - Ability to cluster data points that are combination of text **and** digits
+- Add a 'KmeansFactory' as wrapper for complex Kmeans initialization.
+- Additional 'smart' seeding methods (k-means++).
+- Additional distance measurements (Manhattan, Mahalanobis, etc.).
+- Rand index to measure correlation.
+- Add meaningful labels to output.
+- Print output to file.
+- Ability to cluster text data points (**Ex** via Hamming).
+- Ability to cluster data points that have categorical (text/character/uid) attributes.
 
 ### Support This Project :+1:
 If you wish to help fund further development of this project, feel free to donate to 1G6nykFakoTc6NzzCnDBesGLYUzcvs28vD :tea::coffee::beer:

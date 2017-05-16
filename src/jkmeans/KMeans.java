@@ -46,7 +46,7 @@ public class KMeans {
         
         for (int i = 0; i < I; i++) {
             ClusterPoints();
-            System.out.println("\nIteration " + (i + 1) + " complete...");
+            System.out.println("Iteration " + (i + 1) + " complete...\n");
         }
         
         for (int i = 0; i < K; i++) {

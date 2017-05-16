@@ -34,7 +34,7 @@ public class Tester {
         
         double[][]centroids = KMeans.kmeans(data, k, i, seeds);
         
-        System.out.println("\nClustering complete. Final centroids:");
+        System.out.println("Clustering complete. Final centroids:");
         
         for (int j = 0; j < centroids.length; j++) {
             String line = "Centroid " + j + ": ";
