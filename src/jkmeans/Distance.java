@@ -32,14 +32,19 @@ public class Distance {
      * @return Distance between Strings 1 & 2, expressed as an integer.
      */
     public static int Hamming(String t1, String t2) {
-        //This logic is incomplete, do not use yet.
-        int shorter = (t1.length() > t2.length()) ? t1.length() : t2.length();
-        int diff = (t1.length() == t2.length()) ? 0 : Math.abs(t2.length() - t1.length());
+        int length = t1.length();
+        int diff;
         
-        for (int i = 0; i < (shorter - 1); i++) {
-            if (Character.compare(t1.charAt(i), t2.charAt(i)) != 0) {
-                diff++;
+        if (length == t2.length()) {
+            diff = 0;
+            
+            for (int i = 0; i < length; i++) {
+                if (t1.charAt(i) == t2.charAt(i)) {
+                    diff++;
+                }
             }
+        } else {
+            diff = -1;
         }
         
         return diff;
