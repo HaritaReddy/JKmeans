@@ -13,19 +13,24 @@ public class Tester {
     
     private static int[] seeds;
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
+        //Grab params here, add bounds checking
         String filename = args[0];
         int k = Integer.parseInt(args[1]);
         int i = Integer.parseInt(args[2]);
         int n = Integer.parseInt(args[3]);
         int d = Integer.parseInt(args[4]);
         
+        //Use DataFileReader to process data file into double[][].
         double[][] data = DataFileReader.ReadeCSVFile(new File(filename));
         
+        //Choose initial seeds for cluster centroids.
         randomSeeds(k, n);  //This will eventually be replaced by k-means++
         
-        double[][]centroids = KMeans.kmeans(data, k, i, seeds);
+        //Grab a list of the final centroids after clustering.
+        double[][]centroids = KMeans.kmeans(data, k, i, seeds); //Clustering executed in this line
         
+        //Print output
         System.out.println("Clustering complete. Final centroids:");
         
         for (int j = 0; j < centroids.length; j++) {
@@ -52,17 +57,21 @@ public class Tester {
         seeds = new int[k];
         int count = 0;
         
+        //Randomly choose k points to be centroids. After each choice, check to see if index
+        //has already been used. If so, choose another.
         while (count < k) {
             boolean uniqueIndex = true;
             Random rand = new Random();
             int index = rand.nextInt(n);
             
+            //Check for uniqueness
             for (int i = 0; i < count; i++) {
                 if (index == seeds[i]) {
                     uniqueIndex = false;
                 }
             }
             
+            //If unique, add index and continue
             if(uniqueIndex) {
                 seeds[count] = index;
                 count++;

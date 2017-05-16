@@ -23,19 +23,23 @@ public class KMeans {
         I = iter;
         N = dat.length;
         D = dat[0].length;
+        //Kmeans object keeps own copy of input data, array of clusters w/centroids.
         data = dat;
         clusters = new Cluster[K];
-        double[][] centroids = new double[K][D];
+        double[][] centroids = new double[K][D];    //Used only to hold final centroids for output
         
+        //Initialize K clusters with the K seeds that were pre-chosen.
         for (int i = 0; i < K; i++) {
             clusters[i] = new Cluster(data[seeds[i]]);
         }
         
+        //For each iteration I, cluster the points to centroids, calculate new centroids, and clear points.
         for (int i = 0; i < I; i++) {
             ClusterPoints();
             System.out.println("Iteration " + (i + 1) + " complete...\n");
         }
         
+        //Copy each of the K centroids to an array for output.
         for (int i = 0; i < K; i++) {
             centroids[i] = clusters[i].Centroid();
         }
@@ -50,10 +54,11 @@ public class KMeans {
     private static void ClusterPoints() {
         //Assign points to nearest cluster
         for (int i = 0; i < N; i++) {
-            if (data[i] == null) {
+            if (data[i] == null) {  //This may be too late for error check, may remove later
                 System.out.println("There is no point...");
             }
             
+            //Insert point into cluster with nearest centroid
             clusters[findNearestCentroid(data[i])].Insert(data[i]);
         }
         
@@ -62,9 +67,10 @@ public class KMeans {
             clusters[i].CalcCentroid();
         }
         
-        //Print out SSE's to monitor progress
+        //Total SSE is sum of SSE of all clusters, overall will decrease.
         double totalSSE = 0.;
         
+        //Print out SSE's to monitor progress
         for (int i = 0; i < K; i++) {
             double sse = clusters[i].SumSquareError();
             
@@ -90,6 +96,7 @@ public class KMeans {
         int pos = 0;
         double minDist = Distance.Euclidean(candidate, clusters[pos].Centroid());
         
+        //Check distance of each centroid after the first.
         for (int i = 1; i < clusters.length; i++) {
             if (Distance.Euclidean(candidate, clusters[i].Centroid()) < minDist) {
                 pos = i;

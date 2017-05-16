@@ -14,13 +14,13 @@ public class Cluster {
     private double[] centroid;
     
     /**
-     * Cluster instantiation.
+     * Cluster instantiation: Centroid must be determined in advance.
      * 
      * @param c A double array representing the coordinates of the cluster centroid (average). 
      */
     public Cluster(double[] c) {
         dimensions = c.length;
-        centroid = c;        //The first point is automatically the centroid until it is explicitly re-calculated
+        centroid = c;
         points = new ArrayList<>();
     }
     
@@ -43,7 +43,7 @@ public class Cluster {
     }
     
     /**
-     * Insert given point into centroid.
+     * Insert given point into cluster.
      * 
      * @param point Array of point coordinates expressed as double[].
      */
@@ -52,7 +52,7 @@ public class Cluster {
     }
     
     /**
-     * Returns the sum of squared errors. The lower this value, the more compact the cluster. This value
+     * Returns the sum of squared errors: The lower this value, the more compact the cluster; This value
      * should decrease as clustering progresses, until reaching a local min.
      * 
      * @return The sum of the squared distance from each point to the centroid.
@@ -81,7 +81,7 @@ public class Cluster {
     public void CalcCentroid() {
         centroid = new double[dimensions];
         double[] sum = new double[dimensions];
-        int n = 0;
+        int n = 0;  //Keep track of number of points currently in the cluster, this changes every iteration.
         
         for (double[] point : points) {
             for (int d = 0; d < dimensions; d++) {

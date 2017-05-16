@@ -19,7 +19,7 @@ public class Normalize {
         int dimen = data[0].length;
         double[] min;
         double[] max;
-        double[] range = new double[dimen];
+        double[] range = new double[dimen]; //Calculate this d times, or else it's done p times for each point
         double[][] norm = new double[points][dimen];
 
         //Set the min and max of each attribute to the first point in the data set
@@ -40,13 +40,15 @@ public class Normalize {
             }
         }
         
+        //Calculate range of each dimension
         for (int d = 0; d < dimen; d++) {
             range[d] = max[d] - min[d];
         }
         
+        //Normalize data: norm = (raw - min) / range
         for (int p = 0; p < points; p++) {            
             for (int d = 0; d < dimen; d++) {
-                if(range[d] == 0.) {
+                if(range[d] == 0.) {    //Avoid divide by zero
                     norm[p][d] = 0.;
                 } else {
                     norm[p][d] = (data[p][d] - min[d]) / range[d];
@@ -66,11 +68,10 @@ public class Normalize {
     public static double[][] maxNorm(double[][] data ) {
         int points = data.length;
         int dimen = data[0].length;
-        //Set the max of each attribute to the first point in the set
-        double[] max = data[0];
-        double[][] norm = new double[points][dimen];	//List of normalized data points
+        double[] max = data[0]; //Set the max of each attribute to the first point in the set
+        double[][] norm = new double[points][dimen];
         
-        //Find the highest value of each attribute in the set
+        //Find the max value of each attribute in the set
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
                 if (data[p][d] > max[d]) {
@@ -79,9 +80,10 @@ public class Normalize {
             }
         }
         
+        //Normalize data: norm = raw / max
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                if (max[d] == 0.) {
+                if (max[d] == 0.) { //Avoid divide by zero
                     norm[p][d] = 0.;
                 } else {
                     norm[p][d] = data[p][d] / max[d];
@@ -101,10 +103,10 @@ public class Normalize {
     public static double[][] rangeNorm(double[][] data) {
         int points = data.length;
         int dimen = data[0].length;
-        double[] min;		//List of the lowest value in each attribute
-        double[] max;		//List of the highest value in each attribute
+        double[] min;
+        double[] max;
         double[] range = new double[dimen];
-        double[][] norm = new double[points][dimen];	//List of normalized data points
+        double[][] norm = new double[points][dimen];
         //Set the min and max of each attribute to the first point in the set
         min = max = data[0];
         
@@ -123,13 +125,15 @@ public class Normalize {
             }
         }
         
+        //Calculate the range of each dimension's values
         for (int d = 0; d < dimen; d++) {
             range[d] = max[d] - min[d];
         }
         
+        //Normalize data: norm = raw / range. (Similar to MinMax)
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                if (range[d] == 0.) {
+                if (range[d] == 0.) {   //Avoid divide by zero
                     norm[p][d] = 0.;
                 } else {
                     norm[p][d] = data[p][d] / range[d];
@@ -153,7 +157,7 @@ public class Normalize {
         double[] sums = new double[dimen];		//List of the sum of values of each attribute
         double[] stdDev = new double[dimen];		//List of the standard deviation of each attribute
         double[] sumSquared = new double[dimen];	//List of the variance of each attribute
-        double[][] norm = new double[points][dimen];	//List of normalized data points
+        double[][] norm = new double[points][dimen];
         
         //Find the sum of all values for each attribute in the data set
         for (int p = 0; p < points; p++) {
@@ -179,9 +183,10 @@ public class Normalize {
             stdDev[d] = Math.sqrt(sumSquared[d] / (points - 1));
         }
         
+        //Normalize data: norm = (raw - mean) / std dev.
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                if (stdDev[d] == 0.) {
+                if (stdDev[d] == 0.) {  //Avoid divide by zero.
                     norm[p][d] = 0.;
                 } else {
                     norm[p][d] = (data[p][d] - mean[d]) / stdDev[d];
@@ -203,12 +208,13 @@ public class Normalize {
         int points = data.length;
         int dimen = data[0].length;
         double[] euclidNorm = new double [dimen];	//List of the Euclid. norm of each attribute
-        double[][] norm = new double[points][dimen];	//List of normalized data points
+        double[][] norm = new double[points][dimen];
         
         //Calculate the Euclidean norm of each attribute
         for (int d = 0; d < dimen; d++) {
             double sumSquare = 0.;
             
+            //EuclidNorm[dimension] = sum(EuclideanDist(point[dimension]))
             for (int p = 0; p < points; p++) {
                 sumSquare += data[p][d] * data[p][d];
             }
@@ -216,9 +222,10 @@ public class Normalize {
             euclidNorm[d] = Math.sqrt(sumSquare);
         }
         
+        //Normalize data: norm = raw / euclidNorm
         for (int p = 0; p < points; p++) {
             for (int d = 0; d < dimen; d++) {
-                if (euclidNorm[d] == 0.) {
+                if (euclidNorm[d] == 0.) {  //Avoid divide by zero.
                     norm[p][d] = 0.;
                 } else {
                     norm[p][d] = data[p][d] / euclidNorm[d];
@@ -240,7 +247,7 @@ public class Normalize {
         int points = data.length;
         double[] tmp = data[0];
         double[][] rankings = new double[dimen][points];//List of rankings for each attr. value of each point in data set
-        double[][] norm = new double[points][dimen];	//List of normalized data points
+        double[][] norm = new double[points][dimen];
         
         //Seed the rankings table with the values from the first point in the data set
         for (int d = 0; d < dimen; d++) {
@@ -256,8 +263,8 @@ public class Normalize {
                 * Use insertion sort to put attribute in its place. Based on pseudocode in 
                 * Intro to Algorithms 3rd Ed. (Cormen, et al.) p.18
                 */
-                int i = p - 1;//This corresponds to 'j - 1'.
-                double key = tmp[d];	//The value to be inserted
+                int i = p - 1;          //This corresponds to 'j - 1'.
+                double key = tmp[d];    //The value to be inserted
                 
                 while(i >= 0 && rankings[d][i] > key) {
                     rankings[d][i + 1] = rankings[d][i];	//Move this element up one rank
@@ -268,32 +275,33 @@ public class Normalize {
             }
         }
         
+        //Normalize data: norm = rank(raw)
         for (int p = 0; p < points; p++) {
             tmp = data[p];
-            int rank;						//Lowest rank with this value
-            int maxRank;					//Highest rank with this value
+            int rank;       //Lowest rank with this value
+            int maxRank;    //Highest rank with this value
             
             for (int d = 0; d < dimen; d++) {
-                rank = 0;		//Lowest index with matching value
-                maxRank = 0;	//Highest index with matching value
-                
+                rank = 0;
+                maxRank = 0;
+
                 //Find the lowest rank matching that attribute value
-                while(rank < points && tmp[d] > rankings[d][rank]) {
+                while (rank < points && tmp[d] > rankings[d][rank]) {
                     rank++;
                     maxRank++;
                 }
                 
-                while(maxRank < points && tmp[d] == rankings[d][maxRank]) {
+                while (maxRank < points && tmp[d] == rankings[d][maxRank]) {
                     maxRank++;
                 }
                 
                 //If only one ranking has that value, return the ranking
-                if(maxRank == rank) {
+                if (maxRank == rank) {
                     norm[p][d] = rank;
                 //If more than one ranking has that value, sum the value of rankings and divide by number
                 } else {
-                    double sum = 0.;	//Sum the rankings
-                    int count = 0;		//Count how many rankings there are with this value
+                    double sum = 0.;    //Sum the rankings
+                    int count = 0;      //Count how many rankings there are with this value
                     
                     for (int i = 0; i <  (maxRank - rank); i++) {
                         sum += (rank + i);

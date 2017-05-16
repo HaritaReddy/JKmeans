@@ -22,7 +22,7 @@ public class DataFileReader {
      * @return Array of values expressed as double values.
      */
     public static double[][] ReadeCSVFile(File dataFile) {
-        double[][] data = null;
+        double[][] data = null; //Check for null response, to make sure everything went ok.
         FileReader reader = null;
         CSVParser parser = null;
         CSVFormat format = CSVFormat.DEFAULT;
@@ -33,8 +33,8 @@ public class DataFileReader {
             
             List records = parser.getRecords();
             CSVRecord firstRecord = (CSVRecord) records.get(0);
-            int numRecords = records.size();
-            int numDimen = firstRecord.size();
+            int numRecords = records.size();    //Assuming each line is a data point
+            int numDimen = firstRecord.size();  //Assuming all data points have equal dimensionality
             
             data = new double[numRecords][numDimen];
             
@@ -42,7 +42,7 @@ public class DataFileReader {
                 CSVRecord thisRecord = (CSVRecord) records.get(i);
                 
                 for (int j = 0; j < numDimen; j++) {
-                    data[i][j] = Double.parseDouble(thisRecord.get(j));
+                    data[i][j] = Double.parseDouble(thisRecord.get(j)); //Assuming all data is numeric
                 }
             }
         } catch (IOException ex) {
@@ -76,7 +76,7 @@ public class DataFileReader {
      */
     public static double[][] ReadTSVFile(File dataFile) {
         double[][] data = null;
-        
+        //To-Do
         return data;
     }
 }
